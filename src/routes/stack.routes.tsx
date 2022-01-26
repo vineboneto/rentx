@@ -24,7 +24,8 @@ export type RootStackParamsList = {
 
 export function StackRoutes() {
   return (
-    <Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
+    <Navigator screenOptions={{ headerShown: false }} initialRouteName="Splash">
+      <Screen name="Splash" component={Screens.Splash} />
       <Screen name="Home" component={Screens.Home} />
       <Screen name="CarDetails" component={Screens.CarDetails} />
       <Screen name="Scheduling" component={Screens.Scheduling} />
