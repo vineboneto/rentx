@@ -1,40 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import { RFValue } from 'react-native-responsive-fontsize'
-
-import { Car } from '@/components'
+import { Car, Loading } from '@/components'
+import { CarDto } from '@/dtos'
 import Logo from '@/assets/logo.svg'
+import api from '@/service/api'
 import { Container, Header, HeaderContent, TotalCars, CarList } from './styles'
-import { useNavigation } from '@react-navigation/native'
-
-const data = [
-  {
-    id: '1',
-    thumbnail: 'https://e7.pngegg.com/pngimages/586/647/png-clipart-lamborghini-lamborghini.png',
-    name: 'Coupe',
-    brand: 'audi',
-    rent: {
-      price: 150,
-      period: '1 dia',
-    },
-  },
-  {
-    id: '2',
-    thumbnail: 'https://e7.pngegg.com/pngimages/586/647/png-clipart-lamborghini-lamborghini.png',
-    name: 'Coupe',
-    brand: 'audi',
-    rent: {
-      price: 150,
-      period: '1 dia',
-    },
-  },
-]
 
 export function Home() {
   const navigation = useNavigation()
+  const [cars, setCars] = useState<CarDto[]>([])
+  const [loading, setLoading] = useState(false)
 
-  function handleCarDetails() {
-    navigation.navigate('CarDetails')
+  useEffect(() => {
+    async function fetchCars() {
+      try {
+        const response = await api.get<CarDto[]>('/cars')
+        setCars(response.data)
+      } catch (err) {
+        console.log(err)
+      }
+      setLoading(false)
+    }
+
+    fetchCars()
+  }, [])
+
+  function handleCarDetails(car: CarDto) {
+    navigation.navigate('CarDetails', {
+      car,
+    })
   }
 
   return (
@@ -46,13 +42,17 @@ export function Home() {
           <TotalCars>Total de 12 carros</TotalCars>
         </HeaderContent>
       </Header>
-      <CarList
-        contentContainerStyle={{ padding: 24 }}
-        showsVerticalScrollIndicator={false}
-        data={data}
-        keyExtractor={(item: any) => item.id}
-        renderItem={({ item }: any) => <Car data={item} onPress={() => handleCarDetails()} />}
-      />
+      {loading ? (
+        <Loading />
+      ) : (
+        <CarList
+          contentContainerStyle={{ padding: 24 }}
+          showsVerticalScrollIndicator={false}
+          data={cars}
+          keyExtractor={(item: any) => item.id}
+          renderItem={({ item }: any) => <Car data={item} onPress={() => handleCarDetails(item)} />}
+        />
+      )}
     </Container>
   )
 }
