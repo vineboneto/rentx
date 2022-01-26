@@ -11,7 +11,7 @@ import { Container, Header, HeaderContent, TotalCars, CarList } from './styles'
 export function Home() {
   const navigation = useNavigation()
   const [cars, setCars] = useState<CarDto[]>([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchCars() {

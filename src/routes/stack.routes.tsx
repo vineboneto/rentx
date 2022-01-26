@@ -11,9 +11,14 @@ export type RootStackParamsList = {
   CarDetails: {
     car: CarDto
   }
-  Scheduling: undefined
+  Scheduling: {
+    car: CarDto
+  }
+  SchedulingDetails: {
+    car: CarDto
+    dates: string[]
+  }
   SchedulingComplete: undefined
-  SchedulingDetails: undefined
 }
 
 export function StackRoutes() {
