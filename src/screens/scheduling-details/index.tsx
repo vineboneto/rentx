@@ -48,6 +48,7 @@ type RentalPeriod = {
 export function SchedulingDetails() {
   const theme = useTheme()
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod)
+  const [loading, setLoading] = useState(false)
 
   const route = useRoute()
   const { car, dates } = route.params as Params
@@ -60,9 +61,16 @@ export function SchedulingDetails() {
   }
 
   async function handleSchedulingComplete() {
+    setLoading(true)
     const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`)
 
     const unavailable_dates = [...schedulesByCar.data.unavailable_dates, ...dates]
+    await api.post('schedules_byuser', {
+      user_id: 1,
+      car,
+      startDate: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
+      endDate: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
+    })
 
     api
       .put(`/schedules_bycars/${car.id}`, {
@@ -70,9 +78,13 @@ export function SchedulingDetails() {
         unavailable_dates,
       })
       .then((response) => {
+        setLoading(false)
         navigation.navigate('SchedulingComplete')
       })
-      .catch((err) => Alert.alert('Não foi possível confirmar o agendamento'))
+      .catch((err) => {
+        setLoading(false)
+        Alert.alert('Não foi possível confirmar o agendamento')
+      })
   }
 
   useEffect(() => {

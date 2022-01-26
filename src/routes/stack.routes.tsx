@@ -19,6 +19,7 @@ export type RootStackParamsList = {
     dates: string[]
   }
   SchedulingComplete: undefined
+  MyCars: undefined
 }
 
 export function StackRoutes() {
@@ -29,6 +30,7 @@ export function StackRoutes() {
       <Screen name="Scheduling" component={Screens.Scheduling} />
       <Screen name="SchedulingComplete" component={Screens.SchedulingComplete} />
       <Screen name="SchedulingDetails" component={Screens.SchedulingDetails} />
+      <Screen name="MyCars" component={Screens.MyCars} />
     </Navigator>
   )
 }
