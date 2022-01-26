@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigation } from '@react-navigation/native'
 import { useTheme } from 'styled-components'
 import { StatusBar } from 'expo-status-bar'
 
@@ -8,12 +9,21 @@ import { Container, Header, Title, RentalPeriod, DateInfo, DateTitle, DateValue,
 
 export function Scheduling() {
   const theme = useTheme()
+  const navigation = useNavigation()
+
+  function handleGoBack() {
+    navigation.goBack()
+  }
+
+  function handleSchedulingDetails() {
+    navigation.navigate('SchedulingDetails')
+  }
 
   return (
     <Container>
       <StatusBar style="light" />
       <Header>
-        <BackButton onPress={() => {}} color={theme.colors.shape} />
+        <BackButton onPress={handleGoBack} color={theme.colors.shape} />
 
         <Title>
           Escolha uma {'\n'}
@@ -37,7 +47,7 @@ export function Scheduling() {
         <Calendar />
       </Content>
       <Footer>
-        <Button title="Confirmar" onPress={() => {}} />
+        <Button title="Confirmar" onPress={handleSchedulingDetails} />
       </Footer>
     </Container>
   )

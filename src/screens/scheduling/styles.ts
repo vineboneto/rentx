@@ -27,7 +27,7 @@ export const Title = styled.Text`
 
   font-size: ${RFValue(34)}px;
 
-  margin-top: 24px;
+  margin-top: 5px;
 `
 
 export const RentalPeriod = styled.View`
