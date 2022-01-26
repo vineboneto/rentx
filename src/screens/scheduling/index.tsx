@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Alert } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { DateData } from 'react-native-calendars'
 import { useTheme } from 'styled-components'
@@ -35,10 +34,6 @@ export function Scheduling() {
   }
 
   function handleSchedulingDetails() {
-    if (!rentalPeriod.startFormatted || !rentalPeriod.endFormatted) {
-      Alert.alert('Selecione o intervalo para alugar')
-      return
-    }
     navigation.navigate('SchedulingDetails', {
       car,
       dates: Object.keys(markedDates),
@@ -95,7 +90,7 @@ export function Scheduling() {
         <Calendar markedDates={markedDates} ondDayPress={handleChangeDate} />
       </Content>
       <Footer>
-        <Button title="Confirmar" onPress={handleSchedulingDetails} />
+        <Button title="Confirmar" onPress={handleSchedulingDetails} enabled={!!rentalPeriod.startFormatted} />
       </Footer>
     </Container>
   )

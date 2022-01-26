@@ -78,7 +78,6 @@ export function SchedulingDetails() {
         unavailable_dates,
       })
       .then((response) => {
-        setLoading(false)
         navigation.navigate('SchedulingComplete')
       })
       .catch((err) => {
@@ -149,7 +148,13 @@ export function SchedulingDetails() {
       </Content>
 
       <Footer>
-        <Button title="Alugar agora" color={theme.colors.success} onPress={handleSchedulingComplete} />
+        <Button
+          title="Alugar agora"
+          color={theme.colors.success}
+          onPress={handleSchedulingComplete}
+          loading={loading}
+          enabled={!loading}
+        />
       </Footer>
     </Container>
   )
