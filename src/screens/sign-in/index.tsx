@@ -5,8 +5,8 @@ import { StatusBar } from 'expo-status-bar'
 import { useTheme } from 'styled-components'
 import * as Yup from 'yup'
 import { Button, Input, InputPassword } from '@/components'
-import { Container, Header, Title, SubTitle, Form, Footer } from './styles'
 import { useAuth } from '@/hooks'
+import { Container, Header, Title, SubTitle, Form, Footer } from './styles'
 
 export function SignIn() {
   const { signIn } = useAuth()
@@ -22,7 +22,6 @@ export function SignIn() {
     })
     try {
       await schema.validate({ email, password })
-      Alert.alert('Deu certo!')
 
       signIn({ email, password })
     } catch (err) {

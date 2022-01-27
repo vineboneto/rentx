@@ -16,3 +16,8 @@ $ yarn api
 # Iniciar projeto
 $ yarn expo start
 ```
+
+### Offline first
+
+- **WatermelonDB**
+  - Not support for ios

@@ -4,6 +4,7 @@
     "strict": true,
     "noImplicitAny": false,
     "baseUrl": "src",
+    "experimentalDecorators": true,
     "paths": {
       "@/*": ["*"]
     }

@@ -58,17 +58,26 @@ export function Home() {
   })
 
   useEffect(() => {
+    let isMounted = true
+
     async function fetchCars() {
       try {
         const response = await api.get<CarDto[]>('/cars')
-        setCars(response.data)
+        if (isMounted) {
+          setCars(response.data)
+        }
       } catch (err) {
         console.log(err)
+      } finally {
+        if (isMounted) {
+          setLoading(false)
+        }
       }
-      setLoading(false)
     }
-
     fetchCars()
+    return () => {
+      isMounted = false
+    }
   }, [])
 
   useEffect(() => {
