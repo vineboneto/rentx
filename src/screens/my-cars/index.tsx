@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import { useTheme } from 'styled-components'
 
-import { BackButton, Car, Loading } from '@/components'
+import { BackButton, Car, LoadAnimation, Loading } from '@/components'
 import { CarDto } from '@/dtos'
 import api from '@/service/api'
 import {
@@ -79,7 +79,7 @@ export function MyCars() {
         </Appointments>
 
         {loading ? (
-          <Loading />
+          <LoadAnimation />
         ) : (
           <FlatList
             data={cars}

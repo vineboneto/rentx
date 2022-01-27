@@ -13,7 +13,7 @@ import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'styled-components'
 import { RectButton, PanGestureHandler } from 'react-native-gesture-handler'
 
-import { Car, Loading } from '@/components'
+import { Car, LoadAnimation, Loading } from '@/components'
 import { CarDto } from '@/dtos'
 import Logo from '@/assets/logo.svg'
 import api from '@/service/api'
@@ -95,7 +95,7 @@ export function Home() {
         </HeaderContent>
       </Header>
       {loading ? (
-        <Loading />
+        <LoadAnimation />
       ) : (
         <CarList
           contentContainerStyle={{ padding: 24 }}
