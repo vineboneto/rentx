@@ -46,7 +46,7 @@ export function InputPassword({ iconName, ...props }: Props) {
         onFocus={handleInputFocused}
       />
 
-      <BorderlessButton onPress={handlePasswordVisibilityChange}>
+      <BorderlessButton onPress={handlePasswordVisibilityChange} style={{ zIndex: 5 }}>
         <IconContainer isFocused={isFocused}>
           <Feather name={isPasswordVisibility ? 'eye' : 'eye-off'} size={24} color={theme.colors.text_detail} />
         </IconContainer>

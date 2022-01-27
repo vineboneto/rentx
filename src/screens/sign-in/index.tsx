@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import { useTheme } from 'styled-components'
 import * as Yup from 'yup'
@@ -10,6 +11,7 @@ export function SignIn() {
   const theme = useTheme()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const navigation = useNavigation()
 
   async function handleSignIn() {
     const schema = Yup.object().shape({
@@ -26,6 +28,10 @@ export function SignIn() {
         Alert.alert('Erro na autenticação', 'Ocorrei ao fazer login, verifique as credenciais')
       }
     }
+  }
+
+  function handleSignUpFirstStep() {
+    navigation.navigate('SignUpFirstStep')
   }
 
   return (
@@ -56,7 +62,7 @@ export function SignIn() {
             <Button title="Login" onPress={handleSignIn} enabled={true} loading={false} />
             <Button
               title="Criar Conta gratuita"
-              onPress={() => {}}
+              onPress={handleSignUpFirstStep}
               enabled={false}
               loading={false}
               color={theme.colors.background_secondary}
