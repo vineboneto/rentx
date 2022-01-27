@@ -6,6 +6,10 @@ type ContainerProps = {
   color?: string
 }
 
+type TitleProps = {
+  light: boolean
+}
+
 export const Container = styled(RectButton)<ContainerProps>`
   width: 100%;
 
@@ -13,10 +17,11 @@ export const Container = styled(RectButton)<ContainerProps>`
   align-items: center;
   justify-content: center;
   background-color: ${(props) => (props.color ? props.color : props.theme.colors.main)};
+  margin-bottom: 8px;
 `
 
-export const Title = styled.Text`
+export const Title = styled.Text<TitleProps>`
   font-family: ${(props) => props.theme.fonts.primary_500};
   font-size: ${RFValue(15)}px;
-  color: ${(props) => props.theme.colors.shape};
+  color: ${(props) => (props.light ? props.theme.colors.header : props.theme.colors.shape)};
 `
