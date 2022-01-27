@@ -6,8 +6,10 @@ import { useTheme } from 'styled-components'
 import * as Yup from 'yup'
 import { Button, Input, InputPassword } from '@/components'
 import { Container, Header, Title, SubTitle, Form, Footer } from './styles'
+import { useAuth } from '@/hooks'
 
 export function SignIn() {
+  const { signIn } = useAuth()
   const theme = useTheme()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -21,6 +23,8 @@ export function SignIn() {
     try {
       await schema.validate({ email, password })
       Alert.alert('Deu certo!')
+
+      signIn({ email, password })
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         Alert.alert('Opa', err.message)

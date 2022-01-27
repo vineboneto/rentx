@@ -11,7 +11,7 @@ type TitleProps = {
   light: boolean
 }
 
-export const Container = styled(TouchableOpacity)<ContainerProps>`
+export const Container = styled(RectButton)<ContainerProps>`
   width: 100%;
 
   padding: 19px;

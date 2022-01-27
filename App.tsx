@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components'
 import { StatusBar } from 'expo-status-bar'
 import { useFonts, Archivo_400Regular, Archivo_500Medium, Archivo_600SemiBold } from '@expo-google-fonts/archivo'
 import { Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter'
+import { AuthProvider } from '@/hooks'
 
 import { Routes } from '@/routes'
 import theme from '@/global/theme'
@@ -24,7 +25,9 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <StatusBar style="auto" />
-      <Routes />
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </ThemeProvider>
   )
 }
