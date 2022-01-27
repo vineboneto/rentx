@@ -13,7 +13,7 @@ export function SignUpFirstStep() {
   const [driverLicense, setDriverLicense] = useState('')
 
   function handleGoBack() {
-    navigation.goBack()
+    navigation.navigate('SignIn')
   }
 
   async function handleNextStep() {

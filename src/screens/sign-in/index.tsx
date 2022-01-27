@@ -59,12 +59,10 @@ export function SignIn() {
             <InputPassword iconName="lock" placeholder="Senha" value={password} onChangeText={setPassword} />
           </Form>
           <Footer>
-            <Button title="Login" onPress={handleSignIn} enabled={true} loading={false} />
+            <Button title="Login" onPress={handleSignIn} loading={false} />
             <Button
               title="Criar Conta gratuita"
               onPress={handleSignUpFirstStep}
-              enabled={false}
-              loading={false}
               color={theme.colors.background_secondary}
               light
             />

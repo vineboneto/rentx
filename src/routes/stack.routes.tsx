@@ -37,7 +37,7 @@ export type RootStackParamsList = {
 
 export function StackRoutes() {
   return (
-    <Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
+    <Navigator screenOptions={{ headerShown: false }} initialRouteName="SignUpFirstStep">
       <Screen name="Splash" component={Screens.Splash} />
       <Screen name="SignIn" component={Screens.SignIn} />
       <Screen name="SignUpFirstStep" component={Screens.SignUpFirstStep} />
