@@ -18,7 +18,6 @@ export type RootStackParamsList = {
     car: CarDto
     dates: string[]
   }
-  SchedulingComplete: undefined
   MyCars: undefined
   SignUpFirstStep: undefined
   SignUpSecondStep: {
@@ -29,19 +28,24 @@ export type RootStackParamsList = {
     }
   }
   SignIn: undefined
+  Confirmation: {
+    title: string
+    message: string
+    nextScreenRoute: string
+  }
 }
 
 export function StackRoutes() {
   return (
-    <Navigator screenOptions={{ headerShown: false }} initialRouteName="SignUpFirstStep">
+    <Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
       <Screen name="Splash" component={Screens.Splash} />
       <Screen name="SignIn" component={Screens.SignIn} />
       <Screen name="SignUpFirstStep" component={Screens.SignUpFirstStep} />
       <Screen name="SignUpSecondStep" component={Screens.SignUpSecondStep} />
+      <Screen name="Confirmation" component={Screens.Confirmation} />
       <Screen name="Home" component={Screens.Home} options={{ gestureEnabled: false }} />
       <Screen name="CarDetails" component={Screens.CarDetails} />
       <Screen name="Scheduling" component={Screens.Scheduling} />
-      <Screen name="SchedulingComplete" component={Screens.SchedulingComplete} />
       <Screen name="SchedulingDetails" component={Screens.SchedulingDetails} />
       <Screen name="MyCars" component={Screens.MyCars} />
     </Navigator>
