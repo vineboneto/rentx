@@ -71,7 +71,7 @@ export function CarDetails() {
         style={[headerStyleAnimation, styles.header, { backgroundColor: theme.colors.background_secondary }]}
       >
         <Header>
-          <BackButton onPress={handleGoBack} />
+          <BackButton onPress={handleGoBack} style={{ zIndex: 2 }} />
         </Header>
         <Animated.View style={stylesCarStyleAnimation}>
           <CarImages>
