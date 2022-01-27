@@ -34,14 +34,14 @@ export function AppTabRoutes() {
         options={{ tabBarIcon: ({ color }) => <HomeSvg fill={color} width={24} height={24} /> }}
       />
       <Screen
-        name="Profile"
-        component={Screens.Home}
-        options={{ tabBarIcon: ({ color }) => <PeopleSvg fill={color} width={24} height={24} /> }}
-      />
-      <Screen
         name="MyCars"
         component={Screens.MyCars}
         options={{ tabBarIcon: ({ color }) => <CarSvg fill={color} width={24} height={24} /> }}
+      />
+      <Screen
+        name="Profile"
+        component={Screens.Profile}
+        options={{ tabBarIcon: ({ color }) => <PeopleSvg fill={color} width={24} height={24} /> }}
       />
     </Navigator>
   )
