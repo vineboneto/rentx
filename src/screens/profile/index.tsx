@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, View } from 'react-native'
+import { useNetInfo } from '@react-native-community/netinfo'
+import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, View, Alert } from 'react-native'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import * as ImagePicker from 'expo-image-picker'
+import * as Yup from 'yup'
 import { useTheme } from 'styled-components'
-import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import { Feather } from '@expo/vector-icons'
-import { BackButton, Input, InputPassword } from '@/components'
+import { Button, Input, InputPassword } from '@/components'
 import {
   Container,
   Header,
@@ -26,15 +27,19 @@ import { useAuth } from '@/hooks'
 
 export function Profile() {
   const theme = useTheme()
-  const { user, signOut } = useAuth()
-  const navigation = useNavigation()
+  const { user, signOut, updateUser } = useAuth()
+  const netInfo = useNetInfo()
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit')
   const [avatar, setAvatar] = useState(user.avatar)
   const [name, setName] = useState(user.name)
   const [driverLicense, setDriverLicense] = useState(user.driver_license)
 
   function handleOptionChange(optionSelected: 'dataEdit' | 'passwordEdit') {
-    setOption(optionSelected)
+    if (netInfo.isConnected === false && optionSelected === 'passwordEdit') {
+      Alert.alert('Você está offline', 'Para mudar a senha conecte-se a internet')
+    } else {
+      setOption(optionSelected)
+    }
   }
 
   async function handleAvatarSelected() {
@@ -54,8 +59,45 @@ export function Profile() {
     }
   }
 
+  async function handleProfileUpdate() {
+    try {
+      console.log('Entrei')
+      const schema = Yup.object().shape({
+        driverLicense: Yup.string().required('CNH é obrigatória'),
+        name: Yup.string().required('Nome é obrigatória'),
+      })
+
+      const data = { name, driverLicense }
+      await schema.validate(data)
+      await updateUser({
+        ...user,
+        avatar,
+        name,
+        driver_license: driverLicense,
+      })
+
+      Alert.alert('Perfil atualizado')
+    } catch (err) {
+      console.log(err)
+      if (err instanceof Yup.ValidationError) {
+        Alert.alert('Opa', err.message)
+      } else {
+        Alert.alert('Não foi possível atualizar o perfil')
+      }
+    }
+  }
+
   async function handleSignOut() {
-    signOut()
+    Alert.alert('Tem certeza?', 'Se você sair, irá precisar de internet para conectar-se novamente', [
+      {
+        text: 'Cancelar',
+        onPress: () => {},
+      },
+      {
+        text: 'Confirmar',
+        onPress: () => signOut(),
+      },
+    ])
   }
 
   return (
@@ -116,6 +158,8 @@ export function Profile() {
                 <InputPassword iconName="lock" placeholder="Repetir senha" />
               </Section>
             )}
+
+            <Button title="Salvar alterações" onPress={handleProfileUpdate} />
           </Content>
         </Container>
       </TouchableWithoutFeedback>

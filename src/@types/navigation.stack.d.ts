@@ -1,14 +1,14 @@
-import { CarDto } from '@/dtos'
+import { Car } from '@/databases/model/car'
 type RootStackParamsList = {
   Home: undefined
   CarDetails: {
-    car: CarDto
+    car: any
   }
   Scheduling: {
-    car: CarDto
+    car: any
   }
   SchedulingDetails: {
-    car: CarDto
+    car: any
     dates: string[]
   }
   MyCars: undefined

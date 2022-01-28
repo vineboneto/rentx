@@ -16,7 +16,12 @@ type Props = RectButtonProps & {
 export function Button({ title, color, enabled = true, loading = false, light = false, ...props }: Props) {
   const theme = useTheme()
   return (
-    <Container color={color} style={{ opacity: enabled === false || loading === true ? 0.5 : 1 }} {...props}>
+    <Container
+      color={color}
+      style={{ opacity: enabled === false || loading === true ? 0.5 : 1 }}
+      enabled={enabled}
+      {...props}
+    >
       {loading ? <ActivityIndicator color={theme.colors.shape} /> : <Title light={light}>{title}</Title>}
     </Container>
   )

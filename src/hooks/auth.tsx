@@ -22,6 +22,8 @@ type AuthContextProps = {
   user: User
   signIn: (credentials: SignCredentials) => Promise<void>
   signOut: () => Promise<void>
+  updateUser: (user: User) => Promise<void>
+  loading: boolean
 }
 
 type Props = {
@@ -32,6 +34,7 @@ const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
 
 function AuthProvider({ children }: Props) {
   const [data, setData] = useState<User>({} as User)
+  const [loading, setLoading] = useState(true)
 
   async function signIn({ email, password }: SignCredentials) {
     try {
@@ -75,6 +78,22 @@ function AuthProvider({ children }: Props) {
     }
   }
 
+  async function updateUser(user: User) {
+    try {
+      await database.write(async () => {
+        const userSelected = await database.get<ModelUser>('users').find(user.id)
+        await userSelected.update((userData) => {
+          userData.name = user.name
+          userData.driver_license = user.driver_license
+          userData.avatar = user.avatar
+        })
+      })
+      setData(user)
+    } catch (err: any) {
+      throw new Error(err)
+    }
+  }
+
   useEffect(() => {
     async function loadUserData() {
       const userCollection = database.get<ModelUser>('users')
@@ -83,12 +102,15 @@ function AuthProvider({ children }: Props) {
         const userData = response[0]._raw as unknown as User
         api.defaults.headers['Authorization'] = `Bearer ${userData.token}`
         setData(userData)
+        setLoading(false)
       }
     }
     loadUserData()
   }, [])
 
-  return <AuthContext.Provider value={{ user: data, signIn, signOut }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user: data, signIn, signOut, updateUser, loading }}>{children}</AuthContext.Provider>
+  )
 }
 
 function useAuth(): AuthContextProps {

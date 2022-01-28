@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, BackHandler } from 'react-native'
+import { StyleSheet, BackHandler, Alert } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { useNetInfo } from '@react-native-community/netinfo'
+import { synchronize } from '@nozbe/watermelondb/sync'
+import { database } from '@/databases'
+import { Car as ModelCar } from '@/databases/model/car'
 import { useNavigation } from '@react-navigation/native'
 import Animated, {
   useSharedValue,
@@ -13,8 +17,7 @@ import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'styled-components'
 import { RectButton, PanGestureHandler } from 'react-native-gesture-handler'
 
-import { Car, LoadAnimation, Loading } from '@/components'
-import { CarDto } from '@/dtos'
+import { Car, LoadAnimation } from '@/components'
 import Logo from '@/assets/logo.svg'
 import api from '@/service/api'
 import { Container, Header, HeaderContent, TotalCars, CarList } from './styles'
@@ -23,8 +26,9 @@ const ButtonAnimated = Animated.createAnimatedComponent(RectButton)
 
 export function Home() {
   const theme = useTheme()
+  const netInfo = useNetInfo()
   const navigation = useNavigation()
-  const [cars, setCars] = useState<CarDto[]>([])
+  const [cars, setCars] = useState<ModelCar[]>([])
   const [loading, setLoading] = useState(true)
 
   const positionY = useSharedValue(0)
@@ -62,9 +66,10 @@ export function Home() {
 
     async function fetchCars() {
       try {
-        const response = await api.get<CarDto[]>('/cars')
+        const carCollection = database.get<ModelCar>('cars')
+        const cars = await carCollection.query().fetch()
         if (isMounted) {
-          setCars(response.data)
+          setCars(cars)
         }
       } catch (err) {
         console.log(err)
@@ -84,9 +89,35 @@ export function Home() {
     BackHandler.addEventListener('hardwareBackPress', () => true)
   }, [])
 
-  function handleCarDetails(car: CarDto) {
+  async function offlineSynchronize() {
+    await synchronize({
+      database,
+      pullChanges: async ({ lastPulledAt }) => {
+        const response = await api.get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`)
+
+        const { changes, latestVersion } = response.data
+        return { changes, timestamp: latestVersion }
+      },
+      pushChanges: async ({ changes }) => {
+        try {
+          const user = changes.users
+          await api.post('/users/sync', user)
+        } catch (err: any) {
+          console.log(err.message)
+        }
+      },
+    })
+  }
+
+  useEffect(() => {
+    if (netInfo.isConnected === true) {
+      offlineSynchronize()
+    }
+  }, [netInfo.isConnected])
+
+  function handleCarDetails(car: ModelCar) {
     navigation.navigate('CarDetails', {
-      car,
+      car: car._raw,
     })
   }
 

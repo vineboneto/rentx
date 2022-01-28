@@ -1,5 +1,5 @@
-import { RFValue } from 'react-native-responsive-fontsize'
 import styled, { css } from 'styled-components/native'
+import { RFValue } from 'react-native-responsive-fontsize'
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 import { BorderlessButton, RectButton } from 'react-native-gesture-handler'
 
@@ -58,7 +58,7 @@ export const Photo = styled.Image`
   border-radius: 90px;
 `
 
-export const PhotoButton = styled.TouchableOpacity`
+export const PhotoButton = styled(RectButton)`
   width: 40px;
   height: 40px;
 
