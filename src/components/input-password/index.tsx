@@ -17,6 +17,7 @@ export function InputPassword({ iconName, ...props }: Props) {
   const [isFilled, setIsFilled] = useState(false)
 
   function handlePasswordVisibilityChange() {
+    console.log('Entrei')
     setIsPasswordVisibility((old) => !old)
   }
 
@@ -47,7 +48,7 @@ export function InputPassword({ iconName, ...props }: Props) {
         autoCorrect={false}
       />
 
-      <BorderlessButton onPress={handlePasswordVisibilityChange} style={{ position: 'absolute', right: 0 }}>
+      <BorderlessButton onPress={handlePasswordVisibilityChange}>
         <IconContainer isFocused={isFocused}>
           <Feather name={isPasswordVisibility ? 'eye' : 'eye-off'} size={24} color={theme.colors.text_detail} />
         </IconContainer>

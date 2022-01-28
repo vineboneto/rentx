@@ -21,6 +21,7 @@ type SignCredentials = {
 type AuthContextProps = {
   user: User
   signIn: (credentials: SignCredentials) => Promise<void>
+  signOut: () => Promise<void>
 }
 
 type Props = {
@@ -59,6 +60,21 @@ function AuthProvider({ children }: Props) {
     }
   }
 
+  async function signOut() {
+    try {
+      await database.write(async () => {
+        const userSelected = await database.get<ModelUser>('users').find(data.id)
+        if (userSelected) {
+          await userSelected.destroyPermanently()
+          setData({} as User)
+        }
+      })
+    } catch (err: any) {
+      console.log(err)
+      throw new Error(err)
+    }
+  }
+
   useEffect(() => {
     async function loadUserData() {
       const userCollection = database.get<ModelUser>('users')
@@ -72,7 +88,7 @@ function AuthProvider({ children }: Props) {
     loadUserData()
   }, [])
 
-  return <AuthContext.Provider value={{ user: data, signIn }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ user: data, signIn, signOut }}>{children}</AuthContext.Provider>
 }
 
 function useAuth(): AuthContextProps {

@@ -9,6 +9,7 @@ type OptionProps = {
 
 export const Container = styled.View`
   background-color: ${(props) => props.theme.colors.background_primary};
+  z-index: 1;
 `
 
 export const Header = styled.View`
@@ -38,7 +39,9 @@ export const HeaderTitle = styled.Text`
   color: ${(props) => props.theme.colors.background_secondary};
 `
 
-export const LogoutButton = styled(BorderlessButton)``
+export const LogoutButton = styled(BorderlessButton)`
+  z-index: 1;
+`
 
 export const PhotoContainer = styled.View`
   width: 180px;
@@ -50,11 +53,12 @@ export const PhotoContainer = styled.View`
 
 export const Photo = styled.Image`
   width: 180px;
+  position: relative;
   height: 180px;
   border-radius: 90px;
 `
 
-export const PhotoButton = styled(RectButton)`
+export const PhotoButton = styled.TouchableOpacity`
   width: 40px;
   height: 40px;
 
@@ -64,9 +68,8 @@ export const PhotoButton = styled(RectButton)`
   align-items: center;
 
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  border-radius: 5px;
+  bottom: 0px;
+  right: 0px;
 `
 
 export const Content = styled.View`
