@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import { FlatList } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import { useTheme } from 'styled-components'
 import { format, parseISO } from 'date-fns'
-import { BackButton, Car, LoadAnimation, Loading } from '@/components'
+import { BackButton, Car, LoadAnimation } from '@/components'
 import { Car as ModelCar } from '@/databases/model/car'
-import { CarDto } from '@/dtos'
 import api from '@/service/api'
 import {
   Container,
@@ -37,6 +36,7 @@ export function MyCars() {
   const [cars, setCars] = useState<DataProps[]>([])
   const [loading, setLoading] = useState(true)
   const navigation = useNavigation()
+  const screenIsFocus = useIsFocused()
 
   function handleGoBack() {
     navigation.goBack()
@@ -65,7 +65,7 @@ export function MyCars() {
       }
     }
     fetchCars()
-  }, [])
+  }, [screenIsFocus])
 
   return (
     <Container>

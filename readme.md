@@ -11,7 +11,9 @@
 $ yarn
 
 # Iniciar api
-$ yarn api
+$ cd ./api
+$ yarn
+$ yarn start
 
 # Iniciar projeto
 $ yarn expo start
